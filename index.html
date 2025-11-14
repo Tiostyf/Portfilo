@@ -3,57 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rishabh Singh | Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Rishabh Singh | Full-Stack Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <style>
-    :root{--bg:#0f0f1e;--card:#1a1a2e;--primary:#00ffff;--text:#e0e0ff;--gray:#aaa;}
+    :root{--bg:#0a0a1a;--bg2:#161625;--primary:#00d4ff;--text:#e0e0ff;--gray:#aaa;--red:#ff3366;}
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-    #particles-js{position:fixed;width:100%;height:100%;top:0;left:0;z-index:-1;}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+    #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
 
-    nav{position:fixed;top:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);padding:12px 30px;border-radius:50px;z-index:1000;backdrop-filter:blur(10px);}
-    nav a{color:white;margin:0 20px;text-decoration:none;font-weight:600;}
+    nav{position:fixed;top:20px;right:30px;z-index:1000;background:rgba(0,0,0,0.5);padding:14px 35px;border-radius:50px;backdrop-filter:blur(12px);border:1px solid rgba(0,212,255,0.3);}
+    nav a{color:white;margin:0 22px;text-decoration:none;font-weight:600;transition:.3s;}
     nav a:hover{color:var(--primary);}
 
-    header{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;}
-    .hero h1{font-size:4.5rem;font-weight:900;background:linear-gradient(90deg,#00ffff,#00ffaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .hero p{font-size:1.5rem;color:var(--gray);margin:20px 0;}
-    .btn{display:inline-block;padding:15px 40px;margin:10px;background:transparent;border:2px solid var(--primary);color:var(--primary);border-radius:50px;text-decoration:none;font-weight:700;transition:0.4s;}
-    .btn:hover{background:var(--primary);color:#000;transform:scale(1.1);}
+    header{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;}
+    .hero h1{font-size:5.5rem;font-weight:900;background:linear-gradient(90deg,#00d4ff,#00ffaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero p{font-size:1.8rem;color:var(--gray);margin:25px 0;}
+    .btn{padding:18px 50px;margin:15px;border:2px solid var(--primary);color:var(--primary);background:transparent;border-radius:50px;text-decoration:none;font-weight:700;transition:.5s;}
+    .btn:hover{background:var(--primary);color:#000;transform:scale(1.1);box-shadow:0 15px 30px rgba(0,212,255,.4);}
 
-    section{padding:100px 5%;text-align:center;}
-    h2{font-size:3rem;margin-bottom:60px;background:linear-gradient(90deg,#00ffff,#ff00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    section{padding:120px 8%;}
+    h2{font-size:4rem;text-align:center;margin-bottom:80px;background:linear-gradient(90deg,#00d4ff,#ff00aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
 
-    .upload-box{max-width:800px;margin:0 auto;background:var(--card);padding:50px;border-radius:20px;border:3px dashed var(--primary);}
-    .upload-label{cursor:pointer;background:var(--primary);color:#000;padding:20px 50px;border-radius:50px;font-weight:900;display:inline-block;}
+    .upload-box{max-width:900px;margin:0 auto;background:var(--bg2);padding:70px;border-radius:30px;border:3px dashed var(--primary);text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+    .upload-label{cursor:pointer;background:var(--primary);color:#000;padding:22px 80px;border-radius:50px;font-weight:900;font-size:1.4rem;display:inline-block;transition:.4s;}
+    .upload-label:hover{transform:scale(1.1);box-shadow:0 20px 40px rgba(0,212,255,.5);}
     input[type=file]{display:none;}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;max-width:1400px;margin:50px auto;padding:0 20px;}
-    .card{background:var(--card);border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(0,255,255,0.2);transition:0.4s;cursor:pointer;}
-    .card:hover{transform:translateY(-15px);box-shadow:0 20px 40px rgba(0,255,255,0.4);}
-    .card img,.card video,.card iframe{width:100%;height:250px;object-fit:cover;background:#000;}
-    .card iframe{border:none;}
-    .card-info{padding:15px;background:rgba(0,0,0,0.8);}
-    .card-title{font-weight:700;color:white;}
-    .card-size{color:var(--gray);font-size:0.9rem;}
+    .feed{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:35px;padding:30px;}
+    .post{position:relative;background:var(--bg2);border-radius:25px;overflow:hidden;box-shadow:0 20px 40px rgba(0,212,255,.2);transition:.5s;}
+    .post:hover{transform:translateY(-20px);}
+    .post img,.post video,.post iframe{width:100%;height:340px;object-fit:cover;background:#000;cursor:pointer;}
+    .post iframe{border:none;}
+    .post-info{padding:20px;background:rgba(0,0,0,.9);text-align:center;}
+    .post-title{font-weight:700;font-size:1.2rem;color:white;}
+    .post-meta{color:var(--gray);font-size:0.95rem;margin-top:8px;}
 
+    /* DELETE BUTTON */
+    .delete-btn{
+      position:absolute;top:15px;right:15px;background:var(--red);color:white;width:50px;height:50px;
+      border-radius:50%;display:grid;place-items:center;font-size:1.6rem;cursor:pointer;
+      box-shadow:0 8px 20px rgba(255,51,102,0.5);z-index:10;transition:.4s;
+    }
+    .delete-btn:hover{transform:scale(1.2);background:#ff0066;}
+
+    /* FULL SCREEN MODAL */
     .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);z-index:9999;align-items:center;justify-content:center;padding:20px;}
     .modal.active{display:flex;}
-    .modal-content{max-width:95%;max-height:95%;background:#000;border-radius:15px;overflow:hidden;position:relative;}
+    .modal-content{width:100%;height:100%;max-width:95vw;max-height:95vh;background:#000;border-radius:20px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
     .modal-content img,.modal-content video,.modal-content iframe{width:100%;height:100%;object-fit:contain;}
-    .close{position:absolute;top:15px;right:20px;font-size:3rem;color:white;cursor:pointer;background:rgba(0,0,0,0.7);width:60px;height:60px;border-radius:50%;display:grid;place-items:center;z-index:10;}
-    .download{position:absolute;bottom:20px;right:20px;background:var(--primary);color:#000;padding:12px 25px;border-radius:50px;font-weight:bold;cursor:pointer;}
+    .close{position:absolute;top:20px;right:25px;font-size:5rem;color:white;cursor:pointer;background:rgba(0,0,0,0.7);width:70px;height:70px;border-radius:50%;display:grid;place-items:center;z-index:99999;}
+    .download-btn{position:absolute;bottom:30px;right:30px;background:var(--primary);color:#000;padding:16px 35px;border-radius:50px;font-weight:900;cursor:pointer;z-index:999;}
 
-    .contact-form{max-width:700px;margin:0 auto;background:var(--card);padding:40px;border-radius:20px;}
-    input,textarea{width:100%;padding:15px;margin:10px 0;background:rgba(0,0,0,0.4);border:1px solid var(--primary);border-radius:10px;color:white;outline:none;}
-    button{background:var(--primary);color:#000;border:none;padding:15px 40px;border-radius:50px;font-weight:900;cursor:pointer;}
+    .contact-form{max-width:800px;margin:0 auto;background:var(--bg2);padding:60px;border-radius:30px;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+    input,textarea{width:100%;padding:18px;margin:12px 0;background:rgba(0,0,0,.4);border:1px solid rgba(0,212,255,.4);border-radius:12px;color:white;outline:none;font-size:1.1rem;}
+    button{background:var(--primary);color:#000;border:none;padding:18px 50px;border-radius:50px;font-weight:900;cursor:pointer;font-size:1.2rem;}
 
     @media(max-width:768px){
-      .hero h1{font-size:3rem;}
-      nav{top:10px;padding:10px 15px;}
-      nav a{margin:0 10px;font-size:0.9rem;}
-      .grid{grid-template-columns:1fr;padding:0 10px;}
+      .hero h1{font-size:3.5rem;}
+      .hero p{font-size:1.3rem;}
+      nav{top:10px;right:10px;padding:10px 20px;}
+      nav a{margin:0 12px;font-size:0.9rem;}
+      .feed{grid-template-columns:1fr;padding:20px 10px;}
+      .post img,.post video,.post iframe{height:280px;}
+      .delete-btn{width:45px;height:45px;font-size:1.4rem;top:10px;right:10px;}
     }
   </style>
 </head>
@@ -72,7 +85,7 @@
       <h1>RISHABH SINGH</h1>
       <p>Senior Full-Stack MERN Developer</p>
       <a href="#upload" class="btn">Upload Files</a>
-      <a href="#contact" class="btn">Contact Me</a>
+      <a href="#contact" class="btn">Hire Me</a>
     </div>
   </header>
 
@@ -80,41 +93,44 @@
     <h2>Upload Any File</h2>
     <div class="upload-box">
       <label class="upload-label">
-        Click to Upload (50MB Max)
+        Click to Upload (Max 50MB)
         <input type="file" id="fileInput"/>
       </label>
+      <p style="margin-top:25px;color:var(--gray);font-size:1.2rem;">Images • Videos • PDFs • ZIP • DOCX • Anything!</p>
     </div>
   </section>
 
   <section id="gallery">
-    <h2>Your Files</h2>
-    <div class="grid" id="feed">Loading files...</div>
+    <h2>Your Files (Click to View • Red Button = Delete)</h2>
+    <div class="feed" id="feed">Loading your files...</div>
   </section>
 
   <section id="contact">
     <h2>Get In Touch</h2>
     <div class="contact-form">
       <form id="contactForm">
-        <input type="text" name="name" placeholder="Name" required/>
-        <input type="email" name="email" placeholder="Email" required/>
+        <input type="text" name="name" placeholder="Your Name" required/>
+        <input type="email" name="email" placeholder="Your Email" required/>
         <input type="text" name="subject" placeholder="Subject"/>
-        <textarea name="message" rows="5" placeholder="Message" required></textarea>
+        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
         <button type="submit">Send Message</button>
       </form>
-      <p id="status" style="margin-top:20px;color:var(--primary);font-weight:bold;"></p>
+      <p id="status" style="margin-top:25px;color:var(--primary);font-weight:900;font-size:1.3rem;"></p>
     </div>
   </section>
 
   <!-- FULL SCREEN MODAL -->
   <div class="modal" id="modal">
     <div class="close" onclick="closeModal()">X</div>
-    <div class="download" onclick="downloadFile()">Download</div>
+    <div class="download-btn" onclick="downloadFile()">Download</div>
     <div class="modal-content" id="modalContent"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    particlesJS("particles-js", { particles: { number: { value: 80 }, color: { value: "#00ffff" }, size: { value: 3 }, line_linked: { enable: true, color: "#00ffff", opacity: 0.4 }, move: { speed: 3 } }, interactivity: { events: { onhover: { enable: true, mode: "repulse" } } } });
+    particlesJS("particles-js", {particles:{number:{value:120},color:{value:"#00d4ff"},size:{value:3},
+      line_linked:{enable:true,distance:150,color:"#00d4ff",opacity:0.4,width:1},move:{enable:true,speed:3}},
+      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}}});
 
     let currentUrl = '', currentName = '';
 
@@ -123,30 +139,48 @@
         const res = await fetch('/api/files');
         const files = await res.json();
         const feed = document.getElementById('feed');
-        feed.innerHTML = files.length === 0 ? '<p style="grid-column:1/-1;color:#888;">No files uploaded yet</p>' : '';
+        feed.innerHTML = files.length === 0 ? '<p style="grid-column:1/-1;text-align:center;color:#888;font-size:1.4rem;">No files uploaded yet</p>' : '';
 
         files.forEach(f => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.onclick = () => openModal(f.url, f.type, f.originalName, f.id);
+          const post = document.createElement('div');
+          post.className = 'post';
 
+          // DELETE BUTTON
+          const deleteBtn = document.createElement('div');
+          deleteBtn.className = 'delete-btn';
+          deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (confirm(`Delete "${f.originalName}" permanently?`)) {
+              deleteFile(f.id);
+            }
+          };
+
+          // PREVIEW
           let preview = '';
           if (f.type.startsWith('image/')) preview = `<img src="${f.url}" loading="lazy">`;
           else if (f.type.startsWith('video/')) preview = `<video src="${f.url}" controls></video>`;
-          else if (f.type.includes('pdf')) preview = `<iframe src="${f.url}"></iframe>`;
-          else preview = `<div style="height:250px;display:grid;place-items:center;background:#16213e;"><i class="fas fa-file fa-5x" style="color:var(--primary);"></i></div>`;
+          else if (f.type === 'application/pdf') preview = `<iframe src="${f.url}"></iframe>`;
+          else preview = `<div style="height:340px;display:grid;place-items:center;background:#222;">
+                          <i class="fas fa-file-alt fa-6x" style="color:var(--primary);"></i>
+                          <p style="margin-top:20px;color:white;font-size:1.1rem;">${f.originalName}</p>
+                         </div>`;
 
-          card.innerHTML = `${preview}
-            <div class="card-info">
-              <div class="card-title">${f.originalName}</div>
-              <div class="card-size">${(f.size/1024/1024).toFixed(2)} MB</div>
+          post.innerHTML = `
+            ${preview}
+            <div class="post-info">
+              <div class="post-title">${f.originalName}</div>
+              <div class="post-meta">${(f.size/1024/1024).toFixed(2)} MB • ${f.type.split('/')[1]?.toUpperCase() || 'FILE'}</div>
             </div>`;
-          feed.appendChild(card);
+
+          post.appendChild(deleteBtn);
+          post.onclick = () => openModal(f.url, f.type, f.originalName);
+          feed.appendChild(post);
         });
-      } catch (err) { console.log("Loading..."); }
+      } catch (err) { console.log("Loading files..."); }
     }
 
-    function openModal(url, type, name, id) {
+    function openModal(url, type, name) {
       currentUrl = url; currentName = name;
       const content = document.getElementById('modalContent');
       if (type.startsWith('image/')) content.innerHTML = `<img src="${url}">`;
@@ -167,14 +201,12 @@
     }
 
     async function deleteFile(id) {
-      if (confirm("Delete forever?")) {
-        await fetch(`/api/files/${id}`, { method: 'DELETE' });
-        loadFiles();
-      }
+      await fetch(`/api/files/${id}`, { method: 'DELETE' });
+      loadFiles();
     }
 
     // Upload
-    document.getElementById('fileInput').addEventListener('change', async (e) => {
+    document.getElementById('fileInput').addEventListener('change', async e => {
       const file = e.target.files[0];
       if (!file) return;
       const form = new FormData();
@@ -184,8 +216,8 @@
       e.target.value = '';
     });
 
-    // Contact
-    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    // Contact Form
+    document.getElementById('contactForm').addEventListener('submit', async e => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.target));
       const res = await fetch('/api/contact', {
@@ -199,7 +231,7 @@
     });
 
     loadFiles();
-    setInterval(loadFiles, 8000);
+    setInterval(loadFiles, 10000);
   </script>
 </body>
 </html>

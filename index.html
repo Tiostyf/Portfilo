@@ -60,6 +60,16 @@
     .save-btn{background:var(--green);color:#000;}
     .cancel-btn{background:var(--gray);color:#000;}
 
+    /* Upload Progress */
+    .progress-bar{width:100%;height:8px;background:var(--bg2);border-radius:10px;margin:20px 0;overflow:hidden;display:none;}
+    .progress{height:100%;background:var(--primary);width:0%;transition:width 0.3s ease;}
+    
+    /* Notifications */
+    .notification{position:fixed;top:20px;right:20px;padding:15px 25px;border-radius:10px;color:white;font-weight:600;z-index:10000;transform:translateX(400px);transition:transform 0.3s ease;}
+    .notification.success{background:var(--green);color:#000;}
+    .notification.error{background:var(--red);}
+    .notification.show{transform:translateX(0);}
+
     /* FULL SCREEN MODAL */
     .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);z-index:9999;align-items:center;justify-content:center;padding:20px;}
     .modal.active{display:flex;}
@@ -128,6 +138,9 @@
 <body>
   <div id="particles-js"></div>
 
+  <!-- Notification System -->
+  <div id="notification" class="notification"></div>
+
   <!-- Mobile Menu Button -->
   <div class="mobile-menu-btn" id="mobileMenuBtn">
     <i class="fas fa-bars"></i>
@@ -153,9 +166,12 @@
     <h2>Upload Any File</h2>
     <div class="upload-box">
       <label class="upload-label">
-        Click to Upload (Max 50MB)
+        <i class="fas fa-cloud-upload-alt"></i> Click to Upload (Max 50MB)
         <input type="file" id="fileInput"/>
       </label>
+      <div class="progress-bar" id="progressBar">
+        <div class="progress" id="progress"></div>
+      </div>
       <p style="margin-top:25px;color:var(--gray);font-size:1.2rem;">Images • Videos • PDFs • ZIP • DOCX • Anything!</p>
     </div>
   </section>
@@ -204,6 +220,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
+    // API Base URL
+    const API_BASE = window.location.origin + '/api';
+
     // Initialize particles
     particlesJS("particles-js", {
       particles: {
@@ -224,6 +243,18 @@
       }
     });
 
+    // Notification system
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 5000);
+    }
+
     // Mobile menu toggle
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
       document.getElementById('mainNav').classList.toggle('active');
@@ -242,105 +273,83 @@
 
     // Global variables
     let currentUrl = '', currentName = '';
-    let files = []; // In a real app, this would come from a database
-
-    // Initialize with dummy data
-    function initializeDummyData() {
-      files = [
-        {
-          id: '1',
-          url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-          originalName: 'Code Example.jpg',
-          type: 'image/jpeg',
-          size: 2450000,
-          description: 'Sample code screenshot'
-        },
-        {
-          id: '2',
-          url: 'https://filesamples.com/samples/document/pdf/sample2.pdf',
-          originalName: 'Resume.pdf',
-          type: 'application/pdf',
-          size: 1200000,
-          description: 'My professional resume'
-        },
-        {
-          id: '3',
-          url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-          originalName: 'Project Demo.mp4',
-          type: 'video/mp4',
-          size: 15000000,
-          description: 'Project demonstration video'
-        }
-      ];
-    }
 
     // Load files into the gallery
-    function loadFiles() {
-      const feed = document.getElementById('feed');
-      
-      if (files.length === 0) {
-        feed.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#888;font-size:1.4rem;">No files uploaded yet</p>';
-        return;
-      }
-      
-      feed.innerHTML = '';
-      
-      files.forEach(f => {
-        const post = document.createElement('div');
-        post.className = 'post';
+    async function loadFiles() {
+      try {
+        const response = await fetch(`${API_BASE}/files`);
+        if (!response.ok) throw new Error('Failed to fetch files');
         
-        // Action buttons
-        const actionsDiv = document.createElement('div');
-        actionsDiv.className = 'post-actions';
+        const files = await response.json();
+        const feed = document.getElementById('feed');
         
-        // Delete button
-        const deleteBtn = document.createElement('div');
-        deleteBtn.className = 'action-btn delete-btn';
-        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteBtn.onclick = (e) => {
-          e.stopPropagation();
-          deleteFile(f.id);
-        };
-        
-        // Edit button
-        const editBtn = document.createElement('div');
-        editBtn.className = 'action-btn edit-btn';
-        editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-        editBtn.onclick = (e) => {
-          e.stopPropagation();
-          openEditModal(f);
-        };
-        
-        actionsDiv.appendChild(deleteBtn);
-        actionsDiv.appendChild(editBtn);
-        
-        // Preview
-        let preview = '';
-        if (f.type.startsWith('image/')) {
-          preview = `<img src="${f.url}" loading="lazy" alt="${f.originalName}">`;
-        } else if (f.type.startsWith('video/')) {
-          preview = `<video src="${f.url}" controls></video>`;
-        } else if (f.type === 'application/pdf') {
-          preview = `<iframe src="${f.url}"></iframe>`;
-        } else {
-          preview = `<div style="height:340px;display:grid;place-items:center;background:#222;">
-                      <i class="fas fa-file-alt fa-6x" style="color:var(--primary);"></i>
-                      <p style="margin-top:20px;color:white;font-size:1.1rem;">${f.originalName}</p>
-                     </div>`;
+        if (files.length === 0) {
+          feed.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#888;font-size:1.4rem;">No files uploaded yet</p>';
+          return;
         }
         
-        post.innerHTML = `
-          ${preview}
-          <div class="post-info">
-            <div class="post-title">${f.originalName}</div>
-            <div class="post-meta">${(f.size/1024/1024).toFixed(2)} MB • ${f.type.split('/')[1]?.toUpperCase() || 'FILE'}</div>
-            ${f.description ? `<div class="post-meta">${f.description}</div>` : ''}
-          </div>`;
+        feed.innerHTML = '';
         
-        post.appendChild(actionsDiv);
-        post.onclick = () => openModal(f.url, f.type, f.originalName);
-        feed.appendChild(post);
-      });
+        files.forEach(f => {
+          const post = document.createElement('div');
+          post.className = 'post';
+          
+          // Action buttons
+          const actionsDiv = document.createElement('div');
+          actionsDiv.className = 'post-actions';
+          
+          // Delete button
+          const deleteBtn = document.createElement('div');
+          deleteBtn.className = 'action-btn delete-btn';
+          deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            deleteFile(f.id);
+          };
+          
+          // Edit button
+          const editBtn = document.createElement('div');
+          editBtn.className = 'action-btn edit-btn';
+          editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+          editBtn.onclick = (e) => {
+            e.stopPropagation();
+            openEditModal(f);
+          };
+          
+          actionsDiv.appendChild(deleteBtn);
+          actionsDiv.appendChild(editBtn);
+          
+          // Preview
+          let preview = '';
+          if (f.type.startsWith('image/')) {
+            preview = `<img src="${f.url}" loading="lazy" alt="${f.originalName}">`;
+          } else if (f.type.startsWith('video/')) {
+            preview = `<video src="${f.url}" controls></video>`;
+          } else if (f.type === 'application/pdf') {
+            preview = `<iframe src="${f.url}"></iframe>`;
+          } else {
+            preview = `<div style="height:340px;display:grid;place-items:center;background:#222;">
+                        <i class="fas fa-file-alt fa-6x" style="color:var(--primary);"></i>
+                        <p style="margin-top:20px;color:white;font-size:1.1rem;">${f.originalName}</p>
+                       </div>`;
+          }
+          
+          post.innerHTML = `
+            ${preview}
+            <div class="post-info">
+              <div class="post-title">${f.originalName}</div>
+              <div class="post-meta">${(f.size/1024/1024).toFixed(2)} MB • ${f.type.split('/')[1]?.toUpperCase() || 'FILE'}</div>
+              ${f.description ? `<div class="post-meta">${f.description}</div>` : ''}
+            </div>`;
+          
+          post.appendChild(actionsDiv);
+          post.onclick = () => openModal(f.url, f.type, f.originalName);
+          feed.appendChild(post);
+        });
+      } catch (error) {
+        console.error('Error loading files:', error);
+        showNotification('Failed to load files', 'error');
+      }
     }
 
     // Open fullscreen modal
@@ -374,10 +383,22 @@
     }
 
     // Delete file
-    function deleteFile(id) {
-      if (confirm('Are you sure you want to delete this file?')) {
-        files = files.filter(f => f.id !== id);
+    async function deleteFile(id) {
+      if (!confirm('Are you sure you want to delete this file?')) return;
+      
+      try {
+        const response = await fetch(`${API_BASE}/files/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (!response.ok) throw new Error('Delete failed');
+        
+        const result = await response.json();
+        showNotification(result.message || 'File deleted successfully');
         loadFiles();
+      } catch (error) {
+        console.error('Delete error:', error);
+        showNotification('Failed to delete file', 'error');
       }
     }
 
@@ -395,76 +416,133 @@
     }
 
     // Handle edit form submission
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
       const fileId = document.getElementById('editFileId').value;
       const newName = document.getElementById('editFileName').value;
       const newDescription = document.getElementById('editFileDescription').value;
       
-      // Update file in the array
-      files = files.map(f => {
-        if (f.id === fileId) {
-          return {
-            ...f,
+      try {
+        const response = await fetch(`${API_BASE}/files/${fileId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
             originalName: newName,
             description: newDescription
-          };
-        }
-        return f;
-      });
-      
-      // Reload files
-      loadFiles();
-      
-      // Close modal
-      closeEditModal();
+          })
+        });
+        
+        if (!response.ok) throw new Error('Update failed');
+        
+        const result = await response.json();
+        showNotification('File updated successfully');
+        loadFiles();
+        closeEditModal();
+      } catch (error) {
+        console.error('Update error:', error);
+        showNotification('Failed to update file', 'error');
+      }
     });
 
-    // Upload file
-    document.getElementById('fileInput').addEventListener('change', function(e) {
+    // Upload file with progress
+    document.getElementById('fileInput').addEventListener('change', async function(e) {
       const file = e.target.files[0];
       if (!file) return;
       
-      // Create a preview URL for the file
-      const fileURL = URL.createObjectURL(file);
+      if (file.size > 50 * 1024 * 1024) {
+        showNotification('File size exceeds 50MB limit', 'error');
+        return;
+      }
       
-      // Add to files array
-      const newFile = {
-        id: Date.now().toString(),
-        url: fileURL,
-        originalName: file.name,
-        type: file.type,
-        size: file.size,
-        description: ''
-      };
+      const formData = new FormData();
+      formData.append('file', file);
       
-      files.push(newFile);
-      loadFiles();
+      const progressBar = document.getElementById('progressBar');
+      const progress = document.getElementById('progress');
+      
+      try {
+        progressBar.style.display = 'block';
+        progress.style.width = '0%';
+        
+        const xhr = new XMLHttpRequest();
+        
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            progress.style.width = percentComplete + '%';
+          }
+        });
+        
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            showNotification('File uploaded successfully');
+            loadFiles();
+          } else {
+            throw new Error('Upload failed');
+          }
+          progressBar.style.display = 'none';
+        });
+        
+        xhr.addEventListener('error', () => {
+          showNotification('Upload failed', 'error');
+          progressBar.style.display = 'none';
+        });
+        
+        xhr.open('POST', `${API_BASE}/upload`);
+        xhr.send(formData);
+        
+      } catch (error) {
+        console.error('Upload error:', error);
+        showNotification('Upload failed', 'error');
+        progressBar.style.display = 'none';
+      }
       
       // Reset file input
       e.target.value = '';
     });
 
     // Contact form
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const formData = new FormData(this);
       const data = Object.fromEntries(formData);
       
-      // Simulate form submission
-      document.getElementById('status').textContent = 'Message sent successfully!';
-      this.reset();
-      
-      // Clear status after 3 seconds
-      setTimeout(() => {
-        document.getElementById('status').textContent = '';
-      }, 3000);
+      try {
+        const response = await fetch(`${API_BASE}/contact`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showNotification(result.message);
+          this.reset();
+          document.getElementById('status').textContent = '';
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        console.error('Contact form error:', error);
+        showNotification(error.message || 'Failed to send message', 'error');
+      }
     });
 
     // Initialize the page
-    initializeDummyData();
     loadFiles();
+    
+    // Health check on load
+    fetch(`${API_BASE}/health`)
+      .then(response => response.json())
+      .then(data => console.log('Server health:', data))
+      .catch(error => console.log('Server connection check failed:', error));
   </script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "name": "rishabh-portfolio",
+  "version": "1.0.0",
+  "description": "Rishabh Singh - Full-Stack Portfolio with permanent file upload",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo \"No build step required\""
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "author": "Rishabh Singh",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.7.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^7.0.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

@@ -3,83 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rishabh Singh | Full-Stack Developer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght:400;600;700&display=swap" rel="stylesheet">
+  <title>Rishabh Singh | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <style>
-    :root{--bg:#0a0a1a;--bg2:#161625;--primary:#00d4ff;--text:#e0e0ff;--gray:#aaa;}
+    :root{--bg:#0f0f1e;--card:#1a1a2e;--primary:#00ffff;--text:#e0e0ff;--gray:#aaa;}
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
-    #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    #particles-js{position:fixed;width:100%;height:100%;top:0;left:0;z-index:-1;}
 
-    nav{position:fixed;top:20px;right:30px;z-index:1000;background:rgba(0,0,0,0.5);padding:12px 30px;border-radius:50px;backdrop-filter:blur(10px);}
+    nav{position:fixed;top:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);padding:12px 30px;border-radius:50px;z-index:1000;backdrop-filter:blur(10px);}
     nav a{color:white;margin:0 20px;text-decoration:none;font-weight:600;}
     nav a:hover{color:var(--primary);}
 
-    header{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;}
-    .hero h1{font-size:5rem;background:linear-gradient(90deg,#00d4ff,#00ffaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .hero p{font-size:1.6rem;color:var(--gray);margin:20px 0;}
-    .btn{padding:16px 40px;margin:15px;border:2px solid var(--primary);color:var(--primary);background:transparent;border-radius:50px;text-decoration:none;font-weight:700;transition:.4s;}
-    .btn:hover{background:var(--primary);color:#000;}
+    header{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;}
+    .hero h1{font-size:4.5rem;font-weight:900;background:linear-gradient(90deg,#00ffff,#00ffaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero p{font-size:1.5rem;color:var(--gray);margin:20px 0;}
+    .btn{display:inline-block;padding:15px 40px;margin:10px;background:transparent;border:2px solid var(--primary);color:var(--primary);border-radius:50px;text-decoration:none;font-weight:700;transition:0.4s;}
+    .btn:hover{background:var(--primary);color:#000;transform:scale(1.1);}
 
-    section{padding:100px 10%;}
-    h2{font-size:3.5rem;text-align:center;margin-bottom:60px;background:linear-gradient(90deg,#00d4ff,#ff00aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    section{padding:100px 5%;text-align:center;}
+    h2{font-size:3rem;margin-bottom:60px;background:linear-gradient(90deg,#00ffff,#ff00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-    .upload-box,.contact-form{max-width:900px;margin:40px auto;background:var(--bg2);padding:50px;border-radius:25px;border:2px dashed var(--primary);text-align:center;}
-    .upload-label{cursor:pointer;background:var(--primary);color:#000;padding:18px 60px;border-radius:50px;font-weight:bold;display:inline-block;}
+    .upload-box{max-width:800px;margin:0 auto;background:var(--card);padding:50px;border-radius:20px;border:3px dashed var(--primary);}
+    .upload-label{cursor:pointer;background:var(--primary);color:#000;padding:20px 50px;border-radius:50px;font-weight:900;display:inline-block;}
     input[type=file]{display:none;}
 
-    .feed{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;padding:20px;}
-    .post{background:var(--bg2);border-radius:20px;overflow:hidden;box-shadow:0 15px 35px rgba(0,212,255,.2);transition:.4s;}
-    .post:hover{transform:translateY(-12px);}
-    .post img,.post video,.post iframe{width:100%;height:320px;object-fit:cover;background:#000;}
-    .post iframe{border:none;}
-    .post-actions{padding:15px;display:flex;justify-content:space-between;background:rgba(0,0,0,.7);}
-    .btn-small{background:var(--primary);color:#000;padding:10px 20px;border-radius:20px;cursor:pointer;font-weight:bold;}
-    .btn-del{background:#ff3366;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;max-width:1400px;margin:50px auto;padding:0 20px;}
+    .card{background:var(--card);border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(0,255,255,0.2);transition:0.4s;cursor:pointer;}
+    .card:hover{transform:translateY(-15px);box-shadow:0 20px 40px rgba(0,255,255,0.4);}
+    .card img,.card video,.card iframe{width:100%;height:250px;object-fit:cover;background:#000;}
+    .card iframe{border:none;}
+    .card-info{padding:15px;background:rgba(0,0,0,0.8);}
+    .card-title{font-weight:700;color:white;}
+    .card-size{color:var(--gray);font-size:0.9rem;}
 
-    /* FULL SCREEN MODAL - PERFECT ON PHONE & PC */
-    .modal{
-      display:none;
-      position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);
-      z-index:9999;align-items:center;justify-content:center;padding:20px;
-    }
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);z-index:9999;align-items:center;justify-content:center;padding:20px;}
     .modal.active{display:flex;}
-    .modal-content{
-      position:relative;
-      width:100%;
-      height:100%;
-      max-width:95vw;
-      max-height:95vh;
-      border-radius:20px;
-      overflow:hidden;
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .modal-content img,
-    .modal-content video,
-    .modal-content iframe{
-      width:100% !important;
-      height:100% !important;
-      object-fit:contain !important;
-      border-radius:15px;
-    }
-    .modal-content iframe{border:none;}
-    .close{
-      position:absolute;top:15px;right:20px;font-size:4rem;color:white;cursor:pointer;z-index:99999;
-      background:rgba(0,0,0,0.7);width:60px;height:60px;border-radius:50%;display:grid;place-items:center;
-    }
-    .download-btn{
-      position:absolute;bottom:20px;right:20px;background:var(--primary);color:#000;padding:12px 25px;
-      border-radius:50px;font-weight:bold;cursor:pointer;z-index:999;
-    }
+    .modal-content{max-width:95%;max-height:95%;background:#000;border-radius:15px;overflow:hidden;position:relative;}
+    .modal-content img,.modal-content video,.modal-content iframe{width:100%;height:100%;object-fit:contain;}
+    .close{position:absolute;top:15px;right:20px;font-size:3rem;color:white;cursor:pointer;background:rgba(0,0,0,0.7);width:60px;height:60px;border-radius:50%;display:grid;place-items:center;z-index:10;}
+    .download{position:absolute;bottom:20px;right:20px;background:var(--primary);color:#000;padding:12px 25px;border-radius:50px;font-weight:bold;cursor:pointer;}
+
+    .contact-form{max-width:700px;margin:0 auto;background:var(--card);padding:40px;border-radius:20px;}
+    input,textarea{width:100%;padding:15px;margin:10px 0;background:rgba(0,0,0,0.4);border:1px solid var(--primary);border-radius:10px;color:white;outline:none;}
+    button{background:var(--primary);color:#000;border:none;padding:15px 40px;border-radius:50px;font-weight:900;cursor:pointer;}
 
     @media(max-width:768px){
-      .hero h1{font-size:3.5rem;}
-      .modal-content img,.modal-content video,.modal-content iframe{object-fit:contain;}
-      .close{top:10px;right:10px;font-size:3rem;width:50px;height:50px;}
+      .hero h1{font-size:3rem;}
+      nav{top:10px;padding:10px 15px;}
+      nav a{margin:0 10px;font-size:0.9rem;}
+      .grid{grid-template-columns:1fr;padding:0 10px;}
     }
   </style>
 </head>
@@ -88,7 +62,6 @@
 
   <nav>
     <a href="#home">Home</a>
-    <a href="#about">About</a>
     <a href="#upload">Upload</a>
     <a href="#gallery">Gallery</a>
     <a href="#contact">Contact</a>
@@ -107,27 +80,26 @@
     <h2>Upload Any File</h2>
     <div class="upload-box">
       <label class="upload-label">
-        Click to Upload (Images, PDFs, Videos, ZIP, etc.)
+        Click to Upload (50MB Max)
         <input type="file" id="fileInput"/>
       </label>
-      <p style="margin-top:20px;color:var(--gray);">Max 50MB • All file types allowed!</p>
     </div>
   </section>
 
   <section id="gallery">
-    <h2>Your Files (Saved Forever)</h2>
-    <div class="feed" id="feed">Loading...</div>
+    <h2>Your Files</h2>
+    <div class="grid" id="feed">Loading files...</div>
   </section>
 
   <section id="contact">
     <h2>Get In Touch</h2>
     <div class="contact-form">
       <form id="contactForm">
-        <input type="text" name="name" placeholder="Name" required style="width:100%;padding:15px;margin:10px 0;background:rgba(0,0,0,.3);border:1px solid rgba(0,212,255,.3);border-radius:10px;color:white;">
-        <input type="email" name="email" placeholder="Email" required style="width:100%;padding:15px;margin:10px 0;background:rgba(0,0,0,.3);border:1px solid rgba(0,212,255,.3);border-radius:10px;color:white;">
-        <input type="text" name="subject" placeholder="Subject" style="width:100%;padding:15px;margin:10px 0;background:rgba(0,0,0,.3);border:1px solid rgba(0,212,255,.3);border-radius:10px;color:white;">
-        <textarea name="message" rows="6" placeholder="Message" required style="width:100%;padding:15px;margin:10px 0;background:rgba(0,0,0,.3);border:1px solid rgba(0,212,255,.3);border-radius:10px;color:white;"></textarea>
-        <button type="submit" class="btn">Send Message</button>
+        <input type="text" name="name" placeholder="Name" required/>
+        <input type="email" name="email" placeholder="Email" required/>
+        <input type="text" name="subject" placeholder="Subject"/>
+        <textarea name="message" rows="5" placeholder="Message" required></textarea>
+        <button type="submit">Send Message</button>
       </form>
       <p id="status" style="margin-top:20px;color:var(--primary);font-weight:bold;"></p>
     </div>
@@ -135,101 +107,88 @@
 
   <!-- FULL SCREEN MODAL -->
   <div class="modal" id="modal">
-    <div class="close" onclick="closeModal()">×</div>
-    <a class="download-btn" id="downloadBtn" href="#" download>Download</a>
+    <div class="close" onclick="closeModal()">X</div>
+    <div class="download" onclick="downloadFile()">Download</div>
     <div class="modal-content" id="modalContent"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    particlesJS("particles-js", {particles:{number:{value:100},color:{value:"#00d4ff"},size:{value:3},
-      line_linked:{enable:true,distance:150,color:"#00d4ff",opacity:0.4,width:1},move:{enable:true,speed:3}},
-      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}}});
+    particlesJS("particles-js", { particles: { number: { value: 80 }, color: { value: "#00ffff" }, size: { value: 3 }, line_linked: { enable: true, color: "#00ffff", opacity: 0.4 }, move: { speed: 3 } }, interactivity: { events: { onhover: { enable: true, mode: "repulse" } } } });
 
-    const API = '';
+    let currentUrl = '', currentName = '';
 
     async function loadFiles() {
-      const res = await fetch(API + '/api/files');
-      const files = await res.json();
-      const feed = document.getElementById('feed');
-      feed.innerHTML = files.length === 0 ? '<p style="grid-column:1/-1;text-align:center;color:#888;">No files uploaded yet</p>' : '';
+      try {
+        const res = await fetch('/api/files');
+        const files = await res.json();
+        const feed = document.getElementById('feed');
+        feed.innerHTML = files.length === 0 ? '<p style="grid-column:1/-1;color:#888;">No files uploaded yet</p>' : '';
 
-      files.forEach(f => {
-        const div = document.createElement('div');
-        div.className = 'post';
+        files.forEach(f => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.onclick = () => openModal(f.url, f.type, f.originalName, f.id);
 
-        let preview = '';
-        if (f.type.startsWith('image/')) {
-          preview = `<img src="${f.url}" loading="lazy" style="cursor:pointer;" onclick="openModal('${f.url}', '${f.type}', '${f.originalName}')">`;
-        } else if (f.type.startsWith('video/')) {
-          preview = `<video src="${f.url}" controls style="cursor:pointer;" onclick="openModal('${f.url}', '${f.type}', '${f.originalName}')"></video>`;
-        } else if (f.type === 'application/pdf') {
-          preview = `<iframe src="${f.url}" style="cursor:pointer;" onclick="openModal('${f.url}', '${f.type}', '${f.originalName}')"></iframe>`;
-        } else {
-          preview = `<div style="height:320px;display:grid;place-items:center;background:#222;cursor:pointer;" onclick="openModal('${f.url}', '${f.type}', '${f.originalName}')">
-                      <i class="fas fa-file-alt" style="font-size:5rem;color:var(--primary);"></i>
-                      <p style="margin-top:15px;color:white;">${f.originalName}</p>
-                     </div>`;
-        }
+          let preview = '';
+          if (f.type.startsWith('image/')) preview = `<img src="${f.url}" loading="lazy">`;
+          else if (f.type.startsWith('video/')) preview = `<video src="${f.url}" controls></video>`;
+          else if (f.type.includes('pdf')) preview = `<iframe src="${f.url}"></iframe>`;
+          else preview = `<div style="height:250px;display:grid;place-items:center;background:#16213e;"><i class="fas fa-file fa-5x" style="color:var(--primary);"></i></div>`;
 
-        div.innerHTML = `
-          ${preview}
-          <div style="padding:15px;background:rgba(0,0,0,.8);">
-            <strong style="color:white;">${f.originalName}</strong><br>
-            <small style="color:#aaa;">${(f.size/1024/1024).toFixed(2)} MB</small>
-          </div>
-          <div class="post-actions">
-            <button class="btn-small" onclick="openModal('${f.url}', '${f.type}', '${f.originalName}')">View Full</button>
-            <button class="btn-small btn-del" onclick="deleteFile('${f.id}')">Delete</button>
-          </div>`;
-        feed.appendChild(div);
-      });
+          card.innerHTML = `${preview}
+            <div class="card-info">
+              <div class="card-title">${f.originalName}</div>
+              <div class="card-size">${(f.size/1024/1024).toFixed(2)} MB</div>
+            </div>`;
+          feed.appendChild(card);
+        });
+      } catch (err) { console.log("Loading..."); }
     }
 
-    function openModal(url, type, filename) {
-      const modal = document.getElementById('modal');
+    function openModal(url, type, name, id) {
+      currentUrl = url; currentName = name;
       const content = document.getElementById('modalContent');
-      const downloadBtn = document.getElementById('downloadBtn');
-
-      if (type.startsWith('image/')) {
-        content.innerHTML = `<img src="${url}" alt="${filename}">`;
-      } else if (type.startsWith('video/')) {
-        content.innerHTML = `<video src="${url}" controls autoplay></video>`;
-      } else {
-        content.innerHTML = `<iframe src="${url}"></iframe>`;
-      }
-
-      downloadBtn.href = url;
-      downloadBtn.download = filename;
-      modal.classList.add('active');
+      if (type.startsWith('image/')) content.innerHTML = `<img src="${url}">`;
+      else if (type.startsWith('video/')) content.innerHTML = `<video src="${url}" controls autoplay></video>`;
+      else content.innerHTML = `<iframe src="${url}"></iframe>`;
+      document.getElementById('modal').classList.add('active');
     }
 
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
-      document.getElementById('modalContent').innerHTML = '';
+    }
+
+    function downloadFile() {
+      const a = document.createElement('a');
+      a.href = currentUrl;
+      a.download = currentName;
+      a.click();
     }
 
     async function deleteFile(id) {
       if (confirm("Delete forever?")) {
-        await fetch(API + `/api/files/${id}`, { method: 'DELETE' });
+        await fetch(`/api/files/${id}`, { method: 'DELETE' });
         loadFiles();
       }
     }
 
-    document.getElementById('fileInput').addEventListener('change', async e => {
+    // Upload
+    document.getElementById('fileInput').addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
       const form = new FormData();
       form.append('file', file);
-      await fetch(API + '/api/upload', { method: 'POST', body: form });
+      await fetch('/api/upload', { method: 'POST', body: form });
       loadFiles();
       e.target.value = '';
     });
 
-    document.getElementById('contactForm').addEventListener('submit', async e => {
+    // Contact
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.target));
-      const res = await fetch(API + '/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -240,7 +199,7 @@
     });
 
     loadFiles();
-    setInterval(loadFiles, 10000);
+    setInterval(loadFiles, 8000);
   </script>
 </body>
 </html>

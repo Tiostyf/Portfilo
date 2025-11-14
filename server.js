@@ -1,4 +1,4 @@
-// server.js - FINAL VERSION (100% WORKING EMAIL + FILE UPLOAD)
+// server.js - FINAL & PERFECT (2025 Ready)
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
-// MongoDB Connect
+// MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log("MongoDB Error:", err));
+  .catch(err => console.log("DB Error:", err));
 
-// File Schema
+// Schemas
 const fileSchema = new mongoose.Schema({
   filename: String,
   originalName: String,
@@ -32,20 +32,16 @@ const fileSchema = new mongoose.Schema({
 });
 const File = mongoose.model('File', fileSchema);
 
-// Contact Schema
 const contactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  subject: String,
-  message: String,
+  name: String, email: String, subject: String, message: String,
   date: { type: Date, default: Date.now }
 });
 const Contact = mongoose.model('Contact', contactSchema);
 
-// Create uploads folder
+// Uploads folder
 if (!fs.existsSync('uploads')) fs.mkdirSync('uploads', { recursive: true });
 
-// Multer - Any file
+// Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
   filename: (req, file, cb) => {
@@ -55,28 +51,22 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
-// EMAIL SETUP - WORKING IN 2025
+// Email
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
-  secure: false, // true for 465, false for other ports
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER,     // your@gmail.com
-    pass: process.env.EMAIL_PASS      // 16-digit App Password
-  },
-  tls: { rejectUnauthorized: false }
-});
-
-// Test email on startup
-transporter.verify((error, success) => {
-  if (error) {
-    console.log("EMAIL NOT WORKING:", error);
-  } else {
-    console.log("Email ready! You will receive messages");
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS  // 16-digit App Password
   }
 });
 
-// ROUTES
+transporter.verify((err) => {
+  err ? console.log("EMAIL ERROR:", err.message) : console.log("Email ready!");
+});
+
+// Routes
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file" });
 
@@ -89,7 +79,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   await newFile.save();
 
   const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-  res.json({ success: true, file: { id: newFile._id, url, originalName: req.file.originalname } });
+  res.json({ success: true, file: { id: newFile._id, url, originalName: req.file.originalname, type: req.file.mimetype, size: req.file.size } });
 });
 
 app.get('/api/files', async (req, res) => {
@@ -113,52 +103,29 @@ app.delete('/api/files/:id', async (req, res) => {
     }
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: "Delete failed" });
+    res.status(500).json({ error: "Failed" });
   }
 });
 
-// CONTACT FORM - NOW WORKS 100%
 app.post('/api/contact', async (req, res) => {
   const { name, email, subject, message } = req.body;
-
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: "Please fill all fields" });
-  }
+  if (!name || !email || !message) return res.status(400).json({ error: "Fill all" });
 
   try {
-    // Save to DB
     await new Contact({ name, email, subject, message }).save();
-
-    // Send Email
     await transporter.sendMail({
-      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       replyTo: email,
-      subject: `New Message from ${name} - ${subject || "Portfolio Contact"}`,
-      html: `
-        <h2>New Message from Portfolio</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject || "No subject"}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-        <hr>
-        <small>Sent from your portfolio at ${new Date().toLocaleString()}</small>
-      `
+      subject: `Portfolio: ${subject || "New Message"}`,
+      html: `<h3>New Message</h3><p><b>Name:</b> ${name}<br><b>Email:</b> ${email}</p><p>${message.replace(/\n/g, '<br>')}</p>`
     });
-
-    res.json({ success: true, message: "Message sent! I'll reply soon" });
+    res.json({ success: true, message: "Sent! I'll reply soon" });
   } catch (err) {
-    console.error("Email failed:", err);
-    res.status(500).json({ error: "Failed to send message. Try again." });
+    res.status(500).json({ error: "Failed" });
   }
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Upload files & receive emails!`);
-});
+app.listen(PORT, () => console.log(`LIVE ON PORT ${PORT}`));
